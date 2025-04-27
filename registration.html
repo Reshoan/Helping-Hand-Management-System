@@ -57,6 +57,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+                            <h2 class="text-center mb-4">Apply for Service Position</h2>
                             <h3 class="text-center mb-4">Register</h3>
                             <form>
                                 <div class="mb-3">
@@ -64,17 +65,82 @@
                                     <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="uniqueId" class="form-label">Unique Identification Number</label>
+                                    <input type="text" class="form-control" id="uniqueId" placeholder="Enter your unique ID" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="address" placeholder="Enter your address" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                                </div>
+                                <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                                    <label for="experience" class="form-label">Experience (in years)</label>
+                                    <input type="number" class="form-control" id="experience" placeholder="Enter your experience" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="age" class="form-label">Age</label>
-                                    <input type="number" class="form-control" id="age" placeholder="Enter your age" required>
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select class="form-control" id="gender" required>
+                                        <option value="" disabled selected>Select your gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="dob" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="dob" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nid" class="form-label">National Identification Number</label>
+                                    <input type="text" class="form-control" id="nid" placeholder="Enter your national ID" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rate" class="form-label">Per Hour Rate</label>
+                                    <input type="number" class="form-control" id="rate" placeholder="Enter your per hour rate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="education" class="form-label">Educational Background</label>
+                                    <textarea class="form-control" id="education" placeholder="Enter your educational background" rows="2" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="certifications" class="form-label">Certifications</label>
+                                    <textarea class="form-control" id="certifications" placeholder="Enter your certifications" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="references" class="form-label">References (if available)</label>
+                                    <textarea class="form-control" id="references" placeholder="Enter your references" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="workingHours" class="form-label">Working Hours</label>
+                                    <input type="text" class="form-control" id="workingHours" placeholder="Enter your working hours" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="applyingFor" class="form-label">Applying For</label>
+                                    <select class="form-control" id="applyingFor" required onchange="showAdditionalFields()">
+                                        <option value="" disabled selected>Select the position</option>
+                                        <option value="cook">Cook</option>
+                                        <option value="chauffer">Chauffer</option>
+                                        <option value="security_guard">Security Guard</option>
+                                        <option value="relocators">Relocators</option>
+                                        <option value="cleaners">Cleaners</option>
+                                        <option value="baby_sitter">Baby Sitter</option>
+                                        <option value="masseuse">Masseuse</option>
+                                        <option value="plumber">Plumber</option>
+                                        <option value="electrician">Electrician</option>
+                                        <option value="gardener">Gardener</option>
+                                    </select>
+                                </div>
+
+                                <!-- Additional Fields Section -->
+                                <div id="additionalFields"></div>
+
                                 <button type="submit" class="btn btn-primary w-100 py-3">Register</button>
                             </form>
                             <p class="text-center mt-3">Already have an account? <a href="login.html" class="text-primary">Login</a></p>
@@ -144,6 +210,85 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <script>
+        function showAdditionalFields() {
+            const position = document.getElementById('applyingFor').value;
+            const additionalFields = document.getElementById('additionalFields');
+            additionalFields.innerHTML = ''; // Clear previous fields
+
+            if (position === 'cook') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label for="cuisineExpertise" class="form-label">Cuisine Expertise</label>
+                        <input type="text" class="form-control" id="cuisineExpertise" placeholder="e.g., Chinese, Indian, Thai" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="peopleServed" class="form-label">Number of People You Can Serve</label>
+                        <input type="number" class="form-control" id="peopleServed" placeholder="Enter number of people" required>
+                    </div>
+                `;
+            } else if (position === 'chauffer') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label for="vehicleType" class="form-label">Vehicle Type</label>
+                        <input type="text" class="form-control" id="vehicleType" placeholder="e.g., Light, Heavy" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="licenseDocument" class="form-label">License Document</label>
+                        <input type="file" class="form-control" id="licenseDocument" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="licenseValidity" class="form-label">License Validity Date</label>
+                        <input type="date" class="form-control" id="licenseValidity" required>
+                    </div>
+                `;
+            } else if (position === 'cleaners') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label for="workType" class="form-label">Work Type</label>
+                        <select class="form-control" id="workType" required>
+                            <option value="" disabled selected>Select work type</option>
+                            <option value="part_time">Part Time</option>
+                            <option value="full_time">Full Time</option>
+                        </select>
+                    </div>
+                `;
+            } else if (position === 'security_guard') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label for="weaponsTraining" class="form-label">Weapons Training</label>
+                        <select class="form-control" id="weaponsTraining" required>
+                            <option value="" disabled selected>Do you have weapons training?</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                `;
+            } else if (position === 'relocators') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label for="transportVehicle" class="form-label">Type of Vehicle for Transportation</label>
+                        <input type="text" class="form-control" id="transportVehicle" placeholder="Enter vehicle type" required>
+                    </div>
+                `;
+            } else if (position === 'baby_sitter') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label for="languagesSpoken" class="form-label">Languages You Can Speak</label>
+                        <input type="text" class="form-control" id="languagesSpoken" placeholder="e.g., English, Spanish, French" required>
+                    </div>
+                `;
+            } else if (position === 'masseuse') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label for="speciality" class="form-label">Speciality</label>
+                        <input type="text" class="form-control" id="speciality" placeholder="e.g., General, Post Operational" required>
+                    </div>
+                `;
+            }
+        }
+    </script>
 </body>
 
 </html>
