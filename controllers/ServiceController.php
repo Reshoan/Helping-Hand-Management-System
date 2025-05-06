@@ -11,6 +11,6 @@ class ServiceController {
 
     public function showProviders($serviceId) {
         $providers = Provider::findByService($serviceId);
-        include __DIR__ . '/../views/services/show.php';
+        include __DIR__ . '/../views/services/providers.php';
     }
 }
