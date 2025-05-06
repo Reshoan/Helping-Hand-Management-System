@@ -1,1 +1,7 @@
+follow this yt vid:
 https://youtu.be/oXvrFxg3Y7w?si=WusiUJlxYbX-xOMZ
+
+uninstall your exisiting xampp by going to control panel -> Programs and features
+also delete the xampp folder in C drive
+Then install this version:
+https://sourceforge.net/projects/xampp/
