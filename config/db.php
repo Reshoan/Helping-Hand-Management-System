@@ -2,31 +2,30 @@
 // config/db.php
 
 class Database {
-    private $connection;
+    private static $connection = null;
 
-    // Constructor will connect when an instance is created
-    public function __construct() {
-        $username = "your_username";      // Replace with your Oracle DB username
-        $password = "your_password";      // Replace with your Oracle DB password
-        $connection_string = "//localhost:1521/XE";  // Update as needed
+    public static function getConnection() {
+        if (self::$connection === null) {
+            $host = "localhost";        // or the hostname of your Oracle server
+            $port = "1521";             // default Oracle port
+            $sid  = "XE";               // or your Oracle SID or service name
+            $username = "your_username";
+            $password = "your_password";
 
-        $this->connection = oci_connect($username, $password, $connection_string);
+            $tns = "(DESCRIPTION =
+                        (ADDRESS = (PROTOCOL = TCP)(HOST = $host)(PORT = $port))
+                        (CONNECT_DATA =
+                            (SID = $sid)
+                        )
+                    )";
 
-        if (!$this->connection) {
-            $e = oci_error();
-            die("Connection failed: " . htmlentities($e['message']));
+            try {
+                self::$connection = new PDO("oci:dbname=$tns;charset=AL32UTF8", $username, $password);
+                self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                die("Database connection failed: " . $e->getMessage());
+            }
         }
-    }
-
-    // Getter to return the connection
-    public function getConnection() {
-        return $this->connection;
-    }
-
-    // Optional: method to close connection
-    public function closeConnection() {
-        if ($this->connection) {
-            oci_close($this->connection);
-        }
+        return self::$connection;
     }
 }
