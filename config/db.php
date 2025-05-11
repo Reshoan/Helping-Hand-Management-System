@@ -33,6 +33,7 @@ class Database {
     public static function closeConnection() {
         self::$connection = null;
     }
+    
 }
 
 Database::getConnection();
