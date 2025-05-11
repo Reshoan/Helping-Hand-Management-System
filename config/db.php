@@ -6,26 +6,34 @@ class Database {
 
     public static function getConnection() {
         if (self::$connection === null) {
-            $host = "localhost";        // or the hostname of your Oracle server
-            $port = "1521";             // default Oracle port
-            $sid  = "XE";               // or your Oracle SID or service name
-            $username = "your_username";
-            $password = "your_password";
+            $host = "localhost";
+            $port = "1521";
+            $service = "XE";
+            $username = "system";
+            $password = "system";
 
             $tns = "(DESCRIPTION =
                         (ADDRESS = (PROTOCOL = TCP)(HOST = $host)(PORT = $port))
                         (CONNECT_DATA =
-                            (SID = $sid)
+                            (SERVICE_NAME = $service)
                         )
                     )";
 
             try {
                 self::$connection = new PDO("oci:dbname=$tns;charset=AL32UTF8", $username, $password);
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                echo "Database connection successful.";
             } catch (PDOException $e) {
-                die("Database connection failed: " . $e->getMessage());
+                die("Database connection failed: An error occurred while connecting to the database.");
             }
         }
         return self::$connection;
     }
+
+    public static function closeConnection() {
+        self::$connection = null;
+    }
 }
+
+Database::getConnection();
+?>
