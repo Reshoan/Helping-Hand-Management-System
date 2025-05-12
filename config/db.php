@@ -10,7 +10,7 @@ class Database {
             $port = "1521";
             $service = "XE";
             $username = "hhms";
-            $password = "hhmsq";
+            $password = "hhms";
 
             $tns = "(DESCRIPTION =
                         (ADDRESS = (PROTOCOL = TCP)(HOST = $host)(PORT = $port))
@@ -22,7 +22,7 @@ class Database {
             try {
                 self::$connection = new PDO("oci:dbname=$tns;charset=AL32UTF8", $username, $password);
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "Database connection successful.";
+                //echo "Database connection successful.";
             } catch (PDOException $e) {
                 die("Database connection failed: An error occurred while connecting to the database.");
             }
