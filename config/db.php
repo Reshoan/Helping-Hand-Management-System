@@ -9,8 +9,8 @@ class Database {
             $host = "localhost";
             $port = "1521";
             $service = "XE";
-            $username = "system";
-            $password = "system";
+            $username = "hhms";
+            $password = "hhmsq";
 
             $tns = "(DESCRIPTION =
                         (ADDRESS = (PROTOCOL = TCP)(HOST = $host)(PORT = $port))
