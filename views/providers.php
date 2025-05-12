@@ -47,16 +47,13 @@ if ($conditions) {
 $providers = [];
 
 if ($conn instanceof PDO) {
-    // === PDO EXECUTION ===
     $stmt = $conn->prepare($sql);
     $stmt->execute($params);
     $providers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } elseif (is_resource($conn) && get_resource_type($conn) === 'oci8 connection') {
-    // === OCI8 EXECUTION ===
     $ociParams = $params;
     foreach ($ociParams as $key => $value) {
-        $ociParams[trim($key, ':')] = $value; // Remove colon for oci_bind_by_name
+        $ociParams[trim($key, ':')] = $value;
         unset($ociParams[$key]);
     }
 
@@ -73,63 +70,44 @@ if ($conn instanceof PDO) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Service Provider Filter</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .filter-form { margin-bottom: 20px; }
-        .provider-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Providers</title>
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-    <h1>Filter Service Providers</h1>
-
-    <form method="GET" action="providers.php" class="filter-form">
-        <label for="sp_type">Service Type:</label>
-        <select name="sp_type" id="sp_type">
-            <option value="">--Select--</option>
-            <?php
-            $types = ['cook', 'chauffer', 'security guard', 'relocators', 'cleaners', 'baby sitter', 'masseuse', 'plumber', 'electrician', 'gardener'];
-            foreach ($types as $type) {
-                $selected = (isset($_GET['sp_type']) && $_GET['sp_type'] == $type) ? 'selected' : '';
-                echo "<option value=\"$type\" $selected>" . ucfirst($type) . "</option>";
-            }
-            ?>
-        </select><br><br>
-
-        <label for="min_experience">Minimum Experience (years):</label>
-        <input type="number" name="min_experience" id="min_experience" value="<?= htmlspecialchars(isset($_GET['min_experience']) ? $_GET['min_experience'] : '') ?>"><br><br>
-
-        <label for="max_experience">Maximum Experience (years):</label>
-        <input type="number" name="max_experience" id="max_experience" value="<?= htmlspecialchars(isset($_GET['max_experience']) ? $_GET['max_experience'] : '') ?>"><br><br>
-
-        <label for="max_salary">Maximum Expected Salary:</label>
-        <input type="number" name="max_salary" id="max_salary" value="<?= htmlspecialchars(isset($_GET['max_salary']) ? $_GET['max_salary'] : '') ?>"><br><br>
-
-        <label for="sp_gender">Gender:</label>
-        <select name="sp_gender" id="sp_gender">
-            <option value="">--Select--</option>
-            <option value="Male" <?= (isset($_GET['sp_gender']) && $_GET['sp_gender'] === 'Male') ? 'selected' : '' ?>>Male</option>
-            <option value="Female" <?= (isset($_GET['sp_gender']) && $_GET['sp_gender'] === 'Female') ? 'selected' : '' ?>>Female</option>
-        </select><br><br>
-
-        <button type="submit">Apply Filters</button>
-    </form>
-
-    <h2>Service Providers</h2>
-    <?php if ($providers): ?>
-        <?php foreach ($providers as $provider): ?>
-            <div class="provider-card">
-                <p><strong>Name:</strong> <?= htmlspecialchars(isset($provider['US_NAME']) ? $provider['US_NAME'] : (isset($provider['us_name']) ? $provider['us_name'] : 'N/A')) ?></p>
-                <p><strong>Type:</strong> <?= htmlspecialchars(isset($provider['SP_TYPE']) ? $provider['SP_TYPE'] : (isset($provider['sp_type']) ? $provider['sp_type'] : 'N/A')) ?></p>
-                <p><strong>Experience:</strong> <?= htmlspecialchars(isset($provider['SP_EXPERIENCE']) ? $provider['SP_EXPERIENCE'] : (isset($provider['sp_experience']) ? $provider['sp_experience'] : 'N/A')) ?> years</p>
-                <p><strong>Expected Salary:</strong> <?= htmlspecialchars(isset($provider['SP_EXPECTED_SALARY']) ? $provider['SP_EXPECTED_SALARY'] : (isset($provider['sp_expected_salary']) ? $provider['sp_expected_salary'] : 'N/A')) ?></p>
-                <p><strong>Gender:</strong> <?= htmlspecialchars(isset($provider['SP_GENDER']) ? $provider['SP_GENDER'] : (isset($provider['sp_gender']) ? $provider['sp_gender'] : 'N/A')) ?></p>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No service providers found matching the selected criteria.</p>
-    <?php endif; ?>
+    <div class="container mt-5">
+        <h1 class="text-center">Providers for <?php echo htmlspecialchars($_GET['service_id']); ?></h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Experience</th>
+                    <th>Expected Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($providers as $index => $provider): ?>
+                    <tr>
+                        <td><?php echo $index + 1; ?></td>
+                        <td><?php echo htmlspecialchars($provider['sp_name']); ?></td>
+                        <td><?php echo htmlspecialchars($provider['sp_phone_no']); ?></td>
+                        <td><?php echo htmlspecialchars($provider['sp_email']); ?></td>
+                        <td><?php echo htmlspecialchars($provider['sp_address']); ?></td>
+                        <td><?php echo htmlspecialchars($provider['sp_experience']); ?> years</td>
+                        <td><?php echo htmlspecialchars($provider['sp_expected_salary']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </body>
+
 </html>
